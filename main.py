@@ -3,6 +3,24 @@ from tkinter import *
 
 # ---------------------------- SAVE PASSWORD ------------------------------- #
 
+
+def save_password():
+    f = open("password.txt", "a")
+    company = website_entry.get()
+    email = email_username_entry.get()
+    password = password_entry.get()
+    f.write(f"{company} | {email} | {password}\n")
+    f.close()
+    reset_input()
+
+
+def reset_input():
+    website_entry.delete(0, 'end')
+    email_username_entry.delete(0, 'end')
+    email_username_entry.insert(0, "matthew.giem.programmer@gmail.com")
+    password_entry.delete(0, 'end')
+
+
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -28,8 +46,8 @@ email_username_entry = Entry(width=35)
 email_username_entry.grid(column=1, row=2, columnspan=2)
 email_username_entry.insert(0, "matthew.giem.programmer@gmail.com")
 
-password = Label(text="Password:")
-password.grid(column=0, row=3)
+password_label = Label(text="Password:")
+password_label.grid(column=0, row=3)
 
 password_entry = Entry(width=21)
 password_entry.grid(column=1, row=3)
@@ -37,7 +55,7 @@ password_entry.grid(column=1, row=3)
 password_button = Button(text="Generate Password")
 password_button.grid(column=2, row=3)
 
-add_button = Button(text="Add", width=36)
+add_button = Button(text="Add", width=36, command=save_password)
 add_button.grid(column=1, row=4, columnspan=2)
 
 window.mainloop()
