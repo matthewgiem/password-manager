@@ -32,19 +32,21 @@ def save_password():
             "email": email,
             "password": password
         }}
-    # if company or email or password == "":
-    #     print(company)
-    #     print(email)
-    #     print(password)
-    #     messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
-    # else:
     is_ok = messagebox.askokcancel(title=company, message=f"These are the details for {company} entered:\n"
                                                           f"Email: {email}\nPassword: {password}\n Is it ok to save?")
     if is_ok:
-        with open("password.json", "w") as f:
-            json.dump(new_data, f)
-            f.close()
-            reset_input()
+        try:
+            with open("password.json", "r") as data_file:
+                data = json.load(data_file)
+                data.update(new_data)
+        except FileNotFoundError:
+            with open("password.json", "x") as data_file:
+                json.dump(new_data, data_file, indent=4)
+                reset_input()
+        else:
+            with open("password.json", "w") as data_file:
+                json.dump(data, data_file, indent=4)
+                reset_input()
 
 
 def reset_input():
