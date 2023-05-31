@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter import messagebox
 import random
 import pyperclip
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u",
            "v", "w", "x", "y", "z"]
@@ -26,16 +27,24 @@ def save_password():
     company = website_entry.get()
     email = email_username_entry.get()
     password = password_entry.get()
-    if company or email or password == "":
-        messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
-    else:
-        is_ok = messagebox.askokcancel(title=company, message=f"These are the details entered:\nEmail: {email}"
-                                                              f"\nPassword: {password}\n Is it ok to save?")
-        if is_ok:
-            with open("password.txt", "a") as f:
-                f.write(f"{company} | {email} | {password}\n")
-                f.close()
-                reset_input()
+    new_data = {
+        company: {
+            "email": email,
+            "password": password
+        }}
+    # if company or email or password == "":
+    #     print(company)
+    #     print(email)
+    #     print(password)
+    #     messagebox.showinfo(title="Oops", message="Please make sure you haven't left any fields empty.")
+    # else:
+    is_ok = messagebox.askokcancel(title=company, message=f"These are the details for {company} entered:\n"
+                                                          f"Email: {email}\nPassword: {password}\n Is it ok to save?")
+    if is_ok:
+        with open("password.json", "w") as f:
+            json.dump(new_data, f)
+            f.close()
+            reset_input()
 
 
 def reset_input():
